@@ -4,7 +4,7 @@ set -e
 echo "=== Downloading NoMachine ==="
 
 cd /tmp
-wget https://download.nomachine.com/download/latest/linux/nomachine_amd64.deb
+# wget https://download.nomachine.com/download/latest/linux/nomachine_amd64.deb
 
 echo "=== Installing NoMachine ==="
 # sudo dpkg -i nomachine_amd64.deb || sudo apt -f install -y
