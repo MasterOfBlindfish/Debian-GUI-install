@@ -1,0 +1,23 @@
+Zusammenfassung als Skript (Copy & Paste)
+Hier ein komplettes Skript für 1920x1080 und 1600x900:
+
+# 1. Modi generieren
+cvt 1920 1080 | grep Modeline | sed 's/Modeline //' > /tmp/mode1.txt
+cvt 1600 900 | grep Modeline | sed 's/Modeline //' > /tmp/mode2.txt
+
+# 2. Modi hinzufügen (Achtung: Werte werden hier dynamisch aus den Dateien gelesen)
+# Falls Sie es manuell eingeben wollen, nutzen Sie die Schritte 1-3 oben.
+# Hier eine direkte Variante ohne Datei (Beispielwerte):
+
+xrandr --newmode "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
+xrandr --newmode "1600x900_60.00"   118.25  1600 1696 1856 2112  900 903 908 934 -hsync +vsync
+
+# 3. Zum Ausgang hinzufügen (Ersetzen Sie VNC-0 ggf. durch Ihren Ausgangsnamen)
+xrandr --addmode VNC-0 "1920x1080_60.00"
+xrandr --addmode VNC-0 "1600x900_60.00"
+
+# 4. Aktivieren
+xrandr --output VNC-0 --mode "1920x1080_60.00"
+
+Hinweis: Diese Änderungen sind nicht persistent. Wenn Sie den VNC-Server neu starten (vncserver -kill :1 und neu starten), müssen Sie diese Befehle erneut ausführen. Um sie automatisch zu laden, können Sie die Befehle in Ihre ~/.vnc/xstartup Datei vor dem exec ... Befehl einfügen.
+
