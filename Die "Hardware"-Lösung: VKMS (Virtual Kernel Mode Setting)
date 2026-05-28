@@ -2,6 +2,8 @@ Dies ist der modernste Ansatz im Linux-Kernel. Statt eines X-Treibers wird ein v
 
 Aktivierung: Fügen Sie dem Kernel-Modul folgende Option hinzu (z.B. in /etc/modprobe.d/vkms.conf):
 
+sudo nano /etc/modprobe.d/vkms.conf
+
 options vkms enable_cursor=1
 
 Laden Sie das Modul:
