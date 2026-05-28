@@ -7,5 +7,10 @@ sudo apt install xvfb
 Xvfb :99 -screen 0 1920x1080x24 &
 export DISPLAY=:99
 
+# Startet einen virtuellen Display :99 mit 1920x1080
+Xvfb :99 -screen 0 1600x1000x24 &
+export DISPLAY=:99
+
+
 Vorteil: Keine komplexe xorg.conf nötig. Sie können die Auflösung beim Start festlegen oder Tools nutzen, die xvfb dynamisch steuern. 
 
