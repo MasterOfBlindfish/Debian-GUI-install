@@ -1,0 +1,12 @@
+Dies ist der modernste Ansatz im Linux-Kernel. Statt eines X-Treibers wird ein virtuelles Display auf Kernel-Ebene simuliert. Dies funktioniert oft besser mit Wayland und modernen Desktop-Umgebungen. 
+
+Aktivierung: Fügen Sie dem Kernel-Modul folgende Option hinzu (z.B. in /etc/modprobe.d/vkms.conf):
+
+options vkms enable_cursor=1
+
+Laden Sie das Modul:
+
+sudo modprobe vkms
+
+Starten Sie danach den X-Server neu. Das System erkennt nun ein virtuelles Display, das sich oft leichter mit xrandr konfigurieren lässt als der dummy-Treiber. 
+
