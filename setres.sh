@@ -7,30 +7,45 @@ Erstellen Sie eine Datei namens setres in Ihrem Home-Verzeichnis. Dieses Skript 
 
 cat <<EOF > ~/setres
 #!/bin/bash
-# Einfaches Skript zum Ändern der VNC-Auflösung
 
-# Namen des VNC-Ausgangs automatisch erkennen (meist VNC-0 oder default)
-SCREEN=\$(xrandr | grep " connected" | cut -d" " -f1)
+# 1. Bildschirmnamen automatisch erkennen (meist VNC-0, VNC-1 oder default)
+SCREEN=\$(xrandr | grep " connected" | head -n1 | cut -d" " -f1)
+
+if [ -z "\$SCREEN" ]; then
+    echo "Fehler: Kein verbundener Bildschirm gefunden."
+    exit 1
+fi
 
 # Funktion zum Hinzufügen und Wechseln
 change_res() {
     RES=\$1
-    # Modeline generieren (z.B. 1920x1080_60.00)
-    MODELINE=\$(cvt \${RES%x*} \${RES#*x} 60 | grep Modeline | sed 's/Modeline //')
-    MODENAME=\$(echo \$MODELINE | cut -d" " -f1 | tr -d '"')
+    WIDTH=\${RES%x*}
+    HEIGHT=\${RES#*x}
     
-    # Prüfen ob Modus schon existiert, sonst hinzufügen
+    # Modeline generieren (z.B. "1920x1080_60.00" ...)
+    MODELINE=\$(cvt \$WIDTH \$HEIGHT 60 | grep Modeline | sed 's/Modeline //')
+    MODENAME=\$(echo \$MODELINE | awk '{print \$1}' | tr -d '"')
+    
+    # Prüfen, ob Modus schon beim Bildschirm hinzugefügt wurde
     if ! xrandr | grep -q "\$MODENAME"; then
+        # Modus zum Server hinzufügen
         xrandr --newmode \$MODELINE
+        # Modus zum spezifischen Bildschirm hinzufügen
         xrandr --addmode \$SCREEN \$MODENAME
     fi
     
-    # Auflösung setzen
+    # Jetzt erst die Auflösung setzen
     xrandr --output \$SCREEN --mode \$MODENAME
-    echo "Auflösung geändert auf: \$RES"
+    
+    if [ \$? -eq 0 ]; then
+        echo "Auflösung geändert auf: \$RES (\$SCREEN)"
+    else
+        echo "Fehler beim Setzen der Auflösung \$RES"
+        exit 1
+    fi
 }
 
-# Menü-Anzeige
+# Menü
 case "\$1" in
     1920x1080) change_res "1920x1080" ;;
     1600x900)  change_res "1600x900" ;;
@@ -38,13 +53,11 @@ case "\$1" in
     800x600)   change_res "800x600" ;;
     *)
         echo "Verwendung: \$0 [1920x1080|1600x900|1280x720|800x600]"
-        echo "Beispiel: \$0 1920x1080"
         exit 1
         ;;
 esac
 EOF
 
-# Skript ausführbar machen
 chmod +x ~/setres
 
 2. Auflösung wechseln (So einfach wie am Pi)
