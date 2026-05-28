@@ -13,6 +13,8 @@ Legen Sie das Passwort fest, das Sie beim Verbinden eingeben müssen.
 
 vncpasswd
 
+Merke (sudo nano /root/vncpw)
+
 3. Konfiguration für dynamische Auflösungen
 Erstellen Sie die Konfigurationsdatei, um mehrere Auflösungen (randr) zu definieren, die Sie später live wechseln können.
 
